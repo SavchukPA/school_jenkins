@@ -43,7 +43,6 @@ def test_login_empty_fields(browser):
     assert "Epic sadface" in error
 
 def test_e2e_purchase(browser, logged_in):
-    print(browser.current_url)
     browser.find_element("id", "add-to-cart-sauce-labs-backpack").click()
     browser.find_element("class name", "shopping_cart_link").click()
     item = browser.find_element("class name", "inventory_item_name").text
