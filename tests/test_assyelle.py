@@ -1,33 +1,23 @@
+import time
+from selenium import webdriver
 from selenium.webdriver.common.by import By
 
+driver = webdriver.Chrome()
 
-def test_text_box_output(browser):
-    name = "Alice"
-    email = "allmadhere@mail.com"
-    current_address = "The Mad Hatter's Garden, Wonderland"
-    permanent_address = "Fackham Hall, Little Woldingham, Surrey RH5 8NT, UK"
-    expected_output = {
-        "Name": name,
-        "Email": email,
-        "Current Address": current_address,
-        "Permananet Address": permanent_address
-    }
+driver.get("https://www.selenium.dev/selenium/web/web-form.html")
 
-    browser.get("https://demoqa.com/text-box")
+driver.implicitly_wait(0.5)
 
-    browser.find_element(By.ID, "userName").send_keys(name)
-    browser.find_element(By.ID, "userEmail").send_keys(email)
-    browser.find_element(By.ID, "currentAddress").send_keys(current_address)
-    browser.find_element(By.ID, "permanentAddress").send_keys(permanent_address)
-    browser.find_element(By.ID, "submit").click()
+text_box = driver.find_element(by=By.NAME, value="my-text")
+submit_button = driver.find_element(by=By.CSS_SELECTOR, value="button")
 
-    output_field = browser.find_element(By.ID, "output").text
-    actual_output = {}
-    for line in output_field.split("\n"):
-        key, value = line.split(":", 1)
-        actual_output[key.strip()] = value.strip()
+text_box.send_keys("Selenium")
 
-    assert actual_output == expected_output
+submit_button.click()
 
+message = driver.find_element(by=By.ID, value="message")
+text = message.text
 
+print(text)
 
+driver.quit()
