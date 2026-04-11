@@ -1,13 +1,25 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
+
+def accept_cookies(browser):
+    try:
+        cookie_button = WebDriverWait(browser, 3).until(
+            EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Consent') or contains(text(), 'Accept') or contains(text(), 'Got it')]"))
+        )
+        cookie_button.click()
+    except Exception:
+        pass
 
 def test_login_signup_title(browser):
 
     browser.get("https://automationexercise.com/")
-
     browser.implicitly_wait(1)
-
-    signup_login_button = browser.find_element(by=By.XPATH, value="/html/body/header/div/div/div/div[2]/div/ul/li[4]/a")
+    accept_cookies(browser)
+    signup_login_button = WebDriverWait(browser, 5).until(
+        EC.element_to_be_clickable((By.XPATH, "/html/body/header/div/div/div/div[2]/div/ul/li[4]/a"))
+    )
     signup_login_button.click()
     login_title = browser.find_element(by=By.XPATH, value="/html/body/section/div/div/div[1]/div/h2")
     signup_title = browser.find_element(by=By.XPATH, value="/html/body/section/div/div/div[3]/div/h2")
@@ -22,8 +34,10 @@ def test_login_signup_title(browser):
 def test_signup_first(browser):
     browser.get("https://automationexercise.com/")
     browser.implicitly_wait(1)
-
-    signup_login_button = browser.find_element(by=By.XPATH, value="/html/body/header/div/div/div/div[2]/div/ul/li[4]/a")
+    accept_cookies(browser)
+    signup_login_button = WebDriverWait(browser, 5).until(
+        EC.element_to_be_clickable((By.XPATH, "/html/body/header/div/div/div/div[2]/div/ul/li[4]/a"))
+    )
     signup_login_button.click()
     signup_name_input = browser.find_element(by=By.XPATH, value="/html/body/section/div/div/div[3]/div/form/input[2]")
     signup_email_input = browser.find_element(by=By.XPATH, value="/html/body/section/div/div/div[3]/div/form/input[3]")
