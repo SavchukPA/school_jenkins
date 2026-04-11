@@ -3,6 +3,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
+
 def test_accordion_yul_b(browser):
     browser.get("https://www.automationtesting.co.uk/index.html")
     browser.maximize_window()
