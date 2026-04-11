@@ -1,5 +1,3 @@
-import time
-
 from selenium.webdriver.common.by import By
 
 def click_notification_button(browser_instance):
