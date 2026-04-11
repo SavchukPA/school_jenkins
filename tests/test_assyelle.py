@@ -1,23 +1,26 @@
 import time
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
-driver = webdriver.Chrome()
+def test_web_form():
+    try:
+        driver = webdriver.Chrome()
+        driver.get("https://www.selenium.dev/selenium/web/web-form.html")
+        time.sleep(4)
+        driver.implicitly_wait(0.5)
 
-driver.get("https://www.selenium.dev/selenium/web/web-form.html")
+        text_box = driver.find_element(by=By.NAME, value="my-text")
+        submit_button = driver.find_element(by=By.CSS_SELECTOR, value="button")
 
-driver.implicitly_wait(0.5)
+        text_box.send_keys("Selenium")
 
-text_box = driver.find_element(by=By.NAME, value="my-text")
-submit_button = driver.find_element(by=By.CSS_SELECTOR, value="button")
+        submit_button.click()
 
-text_box.send_keys("Selenium")
+        message = driver.find_element(by=By.ID, value="message")
+        text = message.text
 
-submit_button.click()
+        assert "Received!" in text
 
-message = driver.find_element(by=By.ID, value="message")
-text = message.text
-
-print(text)
-
-driver.quit()
+    finally:
+        driver.quit()
