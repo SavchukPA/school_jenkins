@@ -6,7 +6,10 @@ from selenium.webdriver.support import expected_conditions as EC
 def accept_cookies(browser):
     try:
         cookie_button = WebDriverWait(browser, 3).until(
-            EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Consent') or contains(text(), 'Accept') or contains(text(), 'Got it')]"))
+            EC.element_to_be_clickable((
+                By.XPATH,
+                "//button[@aria-label='Consent' or .//p[contains(., 'Consent')] or .//p[contains(., 'Accept')] or .//p[contains(., 'Got it')]]"
+            ))
         )
         cookie_button.click()
     except Exception:
