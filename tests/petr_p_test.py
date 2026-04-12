@@ -18,27 +18,27 @@ def test_docker():
 
         driver.implicitly_wait(2)
         count = 0
-        while count <= 5:
+        while count <= 3:
             try:
                 driver.find_element(by=By.XPATH, value="//p[text()='Search Docker Hub']/..").click()
                 break
             except StaleElementReferenceException:
                 count += 1
+                time.sleep(1)
+
 
         text_box = driver.find_element(by=By.XPATH, value="//input[@placeholder='Search Docker Hub']")
         text_box.send_keys("jenkins")
         text_box.send_keys(Keys.ENTER)
-        time.sleep(1)
         count = 0
-        while count <= 5:
+        while count <= 3:
             try:
                 search_text = driver.find_element(by=By.XPATH,
-                                                  value="//p[contains(text(), 'Jenkins is an open-source automation server that enables developers to build')]")
+                                                  value="//p[contains(text(), 'Jenkins is an open-source automation server that enables developers to build')]").text
                 break
             except Exception:
                 count += 1
-
-        out_text = search_text.text
+                time.sleep(1)
 
     except Exception as e:
         print(f"Произошла ошибка: {e}")
@@ -46,12 +46,12 @@ def test_docker():
         print("Закрытие браузера...")
         driver.quit()
 
-        assert target_text == out_text
+        assert target_text == search_text
 
 
 def test_github():
 
-    find = False
+    find = ""
     driver = webdriver.Chrome()
 
     try:
@@ -61,12 +61,7 @@ def test_github():
         driver.find_element(By.XPATH, value="//button[@placeholder='Search or jump to...']").click()
         driver.find_element(By.ID, value="query-builder-test").send_keys("redrover")
         driver.find_element(By.XPATH, value="//span[text()='Search all of GitHub']").click()
-        elements = driver.find_elements(By.XPATH, value="//a[@href='/RedRoverSchool/RedRover.school']")
-
-        for i in elements:
-            if i.text == "RedRoverSchool/RedRover.school":
-                find = True
-                break
+        find = driver.find_element(By.XPATH, value="//a[@href='/RedRoverSchool/RedRover.school']").text
 
     except Exception as e:
         print(f"Произошла ошибка: {e}")
@@ -74,7 +69,7 @@ def test_github():
         driver.quit()
         print("Закрытие браузера...")
 
-        assert find, "RedRoverSchool/RedRover.school не найден в результате поиска"
+        assert find == "RedRoverSchool/RedRover.school", "RedRoverSchool/RedRover.school не найден в результате поиска"
 
 
 if __name__ == "__main__":
