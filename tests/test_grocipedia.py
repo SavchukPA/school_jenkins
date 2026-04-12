@@ -20,5 +20,6 @@ def test_find_element():
     page_header = driver.find_element(By.XPATH, '//*[@id="python_efteling"]')
 
     time.sleep(2)
+
     assert page_header.text ==  'Python (Efteling)'
     driver.quit()
