@@ -10,5 +10,5 @@ def test_shkarpetki_page_title(browser):
     time.sleep(2)
     shkarpetki = browser.find_element(By.LINK_TEXT, 'Шкарпэткі')
     shkarpetki.click()
-    time.sleep(3)
+    time.sleep(2)
     assert browser.title == 'Шкарпэткі | Этнакрама РАГНА'
