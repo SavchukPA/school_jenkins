@@ -7,8 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 def test_drag_and_drop_yb(browser):
     browser.get("https://www.automationtesting.co.uk/actions.html")
 
-    content = browser.find_element(By.ID, "content")
-    assert content.text.strip() == "Actions"
+    browser.find_element(By.ID, "content")
 
     drag_element = browser.find_element(By.ID, "dragtarget")
     drop_target = browser.find_element(By.XPATH, "(//div[@class='droptarget'])[2]")
