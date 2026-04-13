@@ -1,6 +1,4 @@
-
-
-from selenium import webdriver
+import time
 
 def test_open_site():
     driver = webdriver.Chrome()
