@@ -1,15 +1,13 @@
 import time
-
 from selenium.webdriver.common.by import By
-
 
 def test_products_link(browser):
     browser.get("https://automationexercise.com/")
     products_link = browser.find_element(By.CSS_SELECTOR,'a[href="/products"]')
-
     products_link.click()
     time.sleep(2)
     center_title = browser.find_element(By.CSS_SELECTOR, 'h2.title.text-center')
+
     assert center_title.text == "ALL PRODUCTS"
 
 def test_woman_category_list(browser):
