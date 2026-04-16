@@ -23,7 +23,7 @@ def sauce_site(driver):
     driver.get("https://bfkh.ru/")
 
 
-# тап по иконке открывает модалку "Создать аккаунт"
+# тап по иконке открывает модальное окно "Создать аккаунт"
 def test_con_header_user(driver: WebDriver, sauce_site):
     icon_header_user = driver.find_element(By.CSS_SELECTOR, "a.header__icon.header__icon_burger-mobile")
     assert icon_header_user.is_displayed(), "Иконка пользователя не найдена"
