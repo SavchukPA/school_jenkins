@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 def test_footer_jenkins_version(browser):
@@ -16,9 +17,10 @@ def test_footer_jenkins_version_dropdown(browser):
     version_button.click()
 
     WebDriverWait(browser, 5).until(
-        lambda d: "About Jenkins" in d.find_element(
-            By.CLASS_NAME, "jenkins-dropdown"
-        ).text
+        EC.text_to_be_present_in_element(
+            (By.CLASS_NAME, "jenkins-dropdown"),
+            "About Jenkins"
+        )
     )
 
     dropdown_items = browser.find_elements(By.CLASS_NAME, "jenkins-dropdown__item")
