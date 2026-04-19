@@ -13,8 +13,7 @@ random_chars = random.choice(["?", "*", "/", ".", "!", "%", "$", '&',  ";", ":)"
 input_field = (By.ID, "name") #поле ввода
 select_new_item_button = (By.XPATH, "//a[@it]") #кнопка новой задачи
 
-error_locator_char = (By.XPATH, '//*[@id="itemname-invalid"]')
-error_locator_dub = (By.XPATH, '//*[@id="itemname-invalid"]')
+error_locator = (By.XPATH, '//*[@id="itemname-invalid"]')
 
 freestyle_project_type = (By.CLASS_NAME, "hudson_model_FreeStyleProject")
 
@@ -36,7 +35,7 @@ def test_new_item_link_is_clickable(browser):
     browser.find_element(*input_field).send_keys(random_chars)
     # ждем когда загрузится поле ввода и вводим текст с недопустимым символом
 
-    error_message = wait.until(EC.visibility_of_element_located(error_locator_char))
+    error_message = wait.until(EC.visibility_of_element_located(error_locator))
     #отлавливаем ошибку неправильного знака
     assert "небезопасный символ" in error_message.text
     ok_button = browser.find_element(By.ID, "ok-button")
@@ -46,7 +45,7 @@ def test_new_item_link_is_clickable(browser):
 
     if existing_task_name is not None:
         browser.find_element(*input_field).send_keys(existing_task_name)
-        error_message_dub = wait.until(EC.visibility_of_element_located(error_locator_dub))
+        error_message_dub = wait.until(EC.visibility_of_element_located(error_locator))
         # отлавливаем уже существующую задачу
         assert "уже существует" in error_message_dub.text
         assert not ok_button.is_enabled(), "Кнопка ОК должна быть неактивна при задаче с таким же именем"
