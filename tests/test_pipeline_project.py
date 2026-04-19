@@ -13,9 +13,9 @@ def test_create_pipeline_project(browser):
     browser.find_element(By.ID, "ok-button").click()
 
     browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-    WebDriverWait(browser, 2).until(EC.element_to_be_clickable(browser.find_element(By.NAME, "Submit"))).click()
+    WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "Submit"))).click()
 
-    WebDriverWait(browser, 2).until(EC.element_to_be_clickable(browser.find_element(By.CLASS_NAME, "app-jenkins-logo"))).click()
+    WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "span.jenkins-mobile-hide"))).click()
 
     created_pipeline = browser.find_element(By.XPATH, "(//a[@href='job/Pipeline_Name/'])[1]").text
 
