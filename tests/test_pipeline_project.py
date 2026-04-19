@@ -15,7 +15,7 @@ def test_create_pipeline_project(browser):
     browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
     WebDriverWait(browser, 2).until(EC.element_to_be_clickable(browser.find_element(By.NAME, "Submit"))).click()
 
-    browser.find_element(By.ID, "jenkins-head-icon").click()
+    browser.find_element(By.CLASS_NAME, "app-jenkins-logo").click()
 
     created_pipeline = browser.find_element(By.XPATH, "(//a[@href='job/Pipeline_Name/'])[1]").text
 
