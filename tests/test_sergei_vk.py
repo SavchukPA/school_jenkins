@@ -42,5 +42,6 @@ def test_create_new_folder(browser):
     time.sleep(2)
     folder = wait.until(EC.visibility_of_element_located((By.LINK_TEXT, 'My folder')))
     assert folder.is_displayed()
+
     time.sleep(2)
 
