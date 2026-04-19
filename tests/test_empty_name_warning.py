@@ -11,3 +11,4 @@ def test_empty_item_mame(browser):
     ok_button =browser.find_element(By.ID,"ok-button")
     warning_message = browser.find_element(By.XPATH,"//div[@id='itemname-required']")
     assert warning_message.is_displayed()
+    assert not ok_button.is_enabled()
