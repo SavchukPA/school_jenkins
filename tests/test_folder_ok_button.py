@@ -1,3 +1,4 @@
+import pytest
 from selenium.webdriver.common.by import By
 
 def test_ok_button_enabled_for_folder(browser):
