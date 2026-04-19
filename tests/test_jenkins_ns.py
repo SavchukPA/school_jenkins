@@ -7,8 +7,8 @@ def test_jenkins_ns(browser):
     browser.find_element(By.ID, "name").send_keys("test_1")
     browser.find_element(By.XPATH,"//*[@id='j-add-item-type-standalone-projects']/ul/li[1]").click()
     browser.find_element(By.ID, "ok-button").click()
-
-
+    # time.sleep(3)
+    browser.wait_for_page_load()
     browser.find_element(By.XPATH, "//*[@id='bottom-sticker']/div/button[1]").click()
     label=browser.find_element(By.XPATH, '//*[@id="bottom-sticker"]/div')
 
