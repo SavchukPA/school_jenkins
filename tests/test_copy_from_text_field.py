@@ -14,7 +14,7 @@ def test_copy_from_text_field(browser):
     browser.find_element(By.XPATH, "(//button[normalize-space()='Save'])[1]").click()
     browser.find_element(By.XPATH, "(//a[@class='app-jenkins-logo'])[1]").click()
     browser.find_element(By.XPATH, "//a[@href='/view/all/newJob']").click()
-    browser.execute_script("window.scrollBy({ top: 400, left: 0, behavior: 'auto' });")
+    browser.execute_script("window.scrollBy({ top: 800, left: 0, behavior: 'auto' });")
     text_field = browser.find_element(By.XPATH, "(//label[normalize-space()='Copy from'])[1]")
     browser.find_element(By.XPATH, "(//input[@id='from'])[1]").click()
     browser.find_element(By.XPATH, "(//input[@id='from'])[1]").send_keys("my_first_pipeline")
