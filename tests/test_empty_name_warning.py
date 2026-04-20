@@ -14,5 +14,5 @@ def test_empty_item_name(browser):
 
     assert element_input.get_attribute("value") == ""
     assert warning_message.is_displayed()
-    assert warning_message.text.strip() == "This field cannot be empty, please enter a valid name"
+    assert warning_message.text.strip() == "» This field cannot be empty, please enter a valid name"
     assert not ok_button.is_enabled()
