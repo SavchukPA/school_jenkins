@@ -9,10 +9,18 @@ def random_characters():
     return random.choice(unsupported_characters)
 
 def test_unsupported_characters(browser):
+    wait = WebDriverWait(browser, 2)
+
+    wait.until(
+        EC.visibility_of_element_located((By.XPATH, "//h1")))
+
     character = random_characters()
 
     new_item = browser.find_element(By.XPATH, "//a[@it]")
     new_item.click()
+
+    wait.until(
+        EC.visibility_of_element_located((By.XPATH, "//h1")))
 
     new_item_field = browser.find_element(By.XPATH, "//input[@name='name']")
     new_item_field.send_keys(character)
