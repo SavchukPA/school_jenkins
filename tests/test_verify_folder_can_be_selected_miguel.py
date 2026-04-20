@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 
+
 def test_verify_folder_selected(browser):
     new_item_button = browser.find_element(By.XPATH, "//a[contains(., 'New Item')]")
     new_item_button.click()
