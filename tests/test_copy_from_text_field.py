@@ -24,7 +24,7 @@ def test_copy_from_text_field(browser):
 
     create_new_pipeline(browser)
 
-    wait.until(ec.element_to_be_clickable((By.CSS_SELECTOR, "#jenkins-head-icon"))).click()
+    wait.until(ec.element_to_be_clickable((By.CSS_SELECTOR, ".app-jenkins-logo"))).click()
     browser.find_element(By.XPATH, "//a[@href='/view/all/newJob']").click()
     wait.until(ec.element_to_be_clickable((By.XPATH, "//input[@id='name']"))).click()
     browser.find_element(By.XPATH, "//input[@id='name']").send_keys("my_second_pipeline")
