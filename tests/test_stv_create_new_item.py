@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 
 def test_stv_create_new_item(browser):
     browser.find_element(By.XPATH, "//a[.//span[text()='New Item']]").click()
-    time.sleep(1)
+
 
     assert "New Item" in browser.title
 
@@ -28,3 +28,20 @@ def test_stv_create_new_item(browser):
     browser.execute_script("arguments[0].scrollIntoView(true);", element_save)
     element_save.click()
     assert "My_First_Test" in browser.title
+
+def test_stv_create_new_folder(browser):
+    browser.find_element(By.XPATH, "//a[.//span[text()='New Item']]").click()
+    browser.find_element(By.XPATH, "//input[@name='name']").send_keys("My_First_Folder")
+    element_folder = browser.find_element(By.XPATH, '//span[@class="label" and text()="Folder"]')
+    browser.execute_script("arguments[0].scrollIntoView(true);", element_folder)
+    element_folder.click()
+    element_ok = browser.find_element(By.XPATH, '//button[@id="ok-button"]')
+    browser.execute_script("arguments[0].scrollIntoView(true);", element_ok)
+    element_ok.click()
+    time.sleep(1)
+    assert "General" in browser.find_element(By.XPATH, '//h2[@id="general"]').text
+    browser.find_element(By.XPATH, '//input[@name="_.displayNameOrNull"]').send_keys("My_First_Folder")
+    browser.find_element(By.XPATH, "//textarea[@name='_.description']").send_keys("My_First_Folder is created")
+    time.sleep(1)
+    browser.find_element(By.XPATH, '//button[@name = "Submit"]').click()
+    assert "My_First_Folder" in browser.find_element(By.XPATH, '//h1').text
