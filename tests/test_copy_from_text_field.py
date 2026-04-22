@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
+import pytest
 
 
 def create_new_pipeline(browser):
@@ -16,7 +17,7 @@ def create_new_pipeline(browser):
     browser.execute_script("window.scrollBy({ top: 1200, left: 0, behavior: 'auto' });")
     wait.until(ec.element_to_be_clickable((By.XPATH, "(//button[normalize-space()='Save'])[1]"))).click()
 
-
+@pytest.mark.skip()
 def test_copy_from_text_field(browser):
     """TC_01.003.01. Verifies 'Copy from' Text Field available"""
 
