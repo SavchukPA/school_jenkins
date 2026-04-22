@@ -8,7 +8,6 @@ def test_check_the_button(browser):
 
     new_item = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "a[href='/view/all/newJob']")))
     new_item.click()
-    time.sleep(2)
 
     button_ok = wait.until(EC.presence_of_element_located((By.ID, 'ok-button')))
     assert not button_ok.is_enabled()
