@@ -7,8 +7,6 @@ from typing_extensions import assert_type
 def test_disable_active_project(browser):
     wait = WebDriverWait(browser, 10)
 
-    browser.get("http://localhost:8080/")
-
     new_item_button = browser.find_element(By.XPATH, "//a[@href='/view/all/newJob']")
     new_item_button.click()
     item_name_input = browser.find_element(By.ID, "name")
