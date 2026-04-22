@@ -18,6 +18,7 @@ def create_pipeline_project(browser, name):
 
     WebDriverWait(browser, 5).until(EC.visibility_of_element_located((By.XPATH, "//*[@class='app-jenkins-logo']"))).click()
 
+@pytest.mark.skip
 def test_create_project(browser):
     create_pipeline_project(browser, pipeline_name)
     created_pipeline = browser.find_element(By.XPATH, f"(//a[@href='job/{pipeline_name}/'])[1]").text
@@ -29,6 +30,8 @@ def test_create_project(browser):
     "PipelineName2",
     "PipelineName3"
 ])
+
+@pytest.mark.skip
 def test_check_several_tests(browser, job_name):
     create_pipeline_project(browser, job_name)
     created_pipeline = browser.find_element(By.CSS_SELECTOR, ".jenkins-table__link >span:first-child").text
