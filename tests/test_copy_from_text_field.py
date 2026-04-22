@@ -40,5 +40,3 @@ def test_copy_from_text_field(browser):
 
     typed_text = text_field.get_attribute("value")
     assert typed_text == "my_first_pipeline"
-
-    # print("\n" f"All good, TC_01.003.01 passed, the text is: {typed_text}")
