@@ -1,3 +1,5 @@
+from time import sleep
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
@@ -26,6 +28,8 @@ def test_copy_from_text_field(browser):
 
     browser.find_element(By.CSS_SELECTOR, "#jenkins-head-icon").click()
     browser.find_element(By.XPATH, "//a[@href='/view/all/newJob']").click()
+    wait.until(ec.element_to_be_clickable((By.XPATH, "//input[@id='name']"))).click()
+    browser.find_element(By.XPATH, "//input[@id='name']").send_keys("my_second_pipeline")
     browser.execute_script("window.scrollBy({ top: 900, left: 0, behavior: 'auto' });")
     wait.until(ec.visibility_of_element_located((By.XPATH, "(//label[normalize-space()='Copy from'])[1]")))
 
