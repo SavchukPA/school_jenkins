@@ -5,8 +5,7 @@ from selenium.webdriver.support import expected_conditions as ec
 
 def create_new_pipeline(browser):
 
-    driver = browser
-    wait = WebDriverWait(driver, 10)
+    wait = WebDriverWait(browser, 10)
 
     browser.find_element(By.XPATH, "//a[@href='/view/all/newJob']").click()
     browser.find_element(By.XPATH, "//input[@id='name']").send_keys("my_first_pipeline")
@@ -21,8 +20,7 @@ def create_new_pipeline(browser):
 def test_copy_from_text_field(browser):
     """TC_01.003.01. Verifies 'Copy from' Text Field available"""
 
-    driver = browser
-    wait = WebDriverWait(driver, 10)
+    wait = WebDriverWait(browser, 10)
 
     create_new_pipeline(browser)
 
