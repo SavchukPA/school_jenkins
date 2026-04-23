@@ -55,4 +55,5 @@ def test_copy_form(browser):
     wait.until(EC.element_to_be_clickable((By.ID, "ok-button"))).click()
     wait.until(EC.element_to_be_clickable((By.NAME, "Submit"))).click()
 
+
     wait.until(EC.visibility_of_element_located((By.XPATH, "//div[@id='tasks']")))
