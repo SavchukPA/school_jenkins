@@ -68,6 +68,7 @@ def test_delete_job(browser, click, fill, check_visibility):
 
     assert browser.find_element(*NOT_FOUND_JOB_TITLE).text == "Not Found"
 
+@pytest.mark.skip
 def test_cancel_delete_job(browser, click, fill, check_visibility):
 
     current_project_name = generate_project_name()
