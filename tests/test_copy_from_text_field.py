@@ -58,3 +58,8 @@ def test_copy_form(browser):
     wait.until(EC.element_to_be_clickable((By.NAME, "Submit"))).click()
 
     wait.until(EC.visibility_of_element_located((By.XPATH, "//div[@id='tasks']")))
+
+    copied_folder = wait.until(EC.presence_of_element_located(
+        (By.XPATH, f"//a[@href='job/{random_name}/']")
+    ))
+    assert copied_folder.is_displayed(), f"Folder '{random_name}' was not copied successfully"
