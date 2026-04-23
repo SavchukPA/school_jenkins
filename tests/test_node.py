@@ -16,9 +16,7 @@ def create_new_node(browser):
     browser.find_element(By.XPATH, "//button[@value='Create']").click()
     browser.find_element(By.XPATH, "//button[@value='Save']").click()
 
-    element = browser.find_element(By.XPATH, "//a[@href='../computer/%s/']" % new_node_name.replace(" ", "%20"))
-
-    return element
+    browser.find_element(By.XPATH, "//a[@href='../computer/%s/']" % new_node_name.replace(" ", "%20"))
 
 def test_create_node(browser):
 
