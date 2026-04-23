@@ -24,6 +24,7 @@ def create_new_pipeline(browser):
 
     wait.until(EC.element_to_be_clickable((By.NAME, "Submit"))).click()
 
+    wait.until(EC.visibility_of_element_located((By.XPATH, "//div[@class='jenkins-header__main']")))
     wait.until(EC.element_to_be_clickable((By.XPATH, "//img[@id='jenkins-head-icon']"))).click()
 
     new_job = wait.until(EC.element_to_be_clickable((By.XPATH, "//a[@class='jenkins-table__link model-link inside']")))
