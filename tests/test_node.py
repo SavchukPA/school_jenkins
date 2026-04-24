@@ -1,7 +1,5 @@
 import pytest
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
 new_node_name = "New Test Node"
 description = "Use only for urgent tasks"
