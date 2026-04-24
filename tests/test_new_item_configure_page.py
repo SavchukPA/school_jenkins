@@ -12,18 +12,15 @@ def test_new_item_configure_page(browser):
     item_name_input = (By.XPATH, '//input[@id="name"]')
     wait.until(EC.visibility_of_element_located(item_name_input)).send_keys("my_first_project")
     entered_name = browser.find_element(By.XPATH, '//input[@id="name"]').get_attribute("value")
-    time.sleep(2)
 
     freestyle_project_radio = (By.XPATH, '//li[@class ="hudson_model_FreeStyleProject"]')
     wait.until(EC.visibility_of_element_located(freestyle_project_radio)).click()
 
     ok_button = (By.XPATH, '//button[@id="ok-button"]')
     wait.until(EC.element_to_be_clickable(ok_button)).click()
-    time.sleep(2)
 
     configure_page_heading = (By.XPATH, '//h1')
     h1_text_configure_page = wait.until(EC.visibility_of_element_located(configure_page_heading)).text
-    time.sleep(2)
 
     assert 'Configure' in h1_text_configure_page, 'Configure page heading does not match expected h1-text'
     assert browser.current_url == f"http://localhost:8080/job/{entered_name}/configure", "Configure page URL does not match expected url"
