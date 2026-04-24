@@ -64,7 +64,7 @@ def test_delete_job(browser, click, fill, check_visibility):
 
 def test_cancel_delete_job(browser, click, fill, check_visibility):
 
-    current_roject_name = generate_project_name()
+    current_project_name = generate_project_name()
 
     create_job(click, fill, check_visibility, current_project_name)
     browser.get(browser.current_url + f"/job/{current_project_name}/")
