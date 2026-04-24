@@ -75,7 +75,6 @@ def test_mark_node_offline(browser, go_to_node_management_page):
 
 def test_bring_node_online(browser, mark_node_offline):
 
-    WebDriverWait(browser, 5).until(
-        EC.element_to_be_clickable((By.CLASS_NAME, "jenkins-button--primary"))).click()
+    browser.find_element(By.XPATH, "//button [@value ='Bring this node back online']").click()
 
     assert browser.find_element(By.XPATH, "//form [@action='markOffline']").text == "Mark this node temporarily offline"
