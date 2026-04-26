@@ -11,18 +11,25 @@ def _get_manage_jenkins_button(driver):
     return driver.find_element(*manage_jenkins_button)
 
 
-def test_checking_the_button_on_key_pages(browser):
+def test_checking_the_button_on_dashboard(browser):
     rest_api_link = _get_rest_api_link(browser)
+
     assert rest_api_link.is_displayed()
 
+
+def test_checking_the_button_on_nodes(browser):
     _get_manage_jenkins_button(browser).click()
     browser.find_element(By.CSS_SELECTOR, 'a[href="computer"]').click()
 
     rest_api_link = _get_rest_api_link(browser)
+
     assert rest_api_link.is_displayed()
 
+
+def test_checking_the_button_on_credentials(browser):
     _get_manage_jenkins_button(browser).click()
     browser.find_element(By.CSS_SELECTOR, 'a[href="credentials"]').click()
 
     rest_api_link = _get_rest_api_link(browser)
+
     assert rest_api_link.is_displayed()
