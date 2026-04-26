@@ -48,10 +48,15 @@ def test_verify_enable_toogle_has_tooltip(browser):
 ])
 def test_create_item_with_special_characters(browser, special_characters):
     browser.find_element(By.XPATH, "//a[@href='/view/all/newJob']").click()
+    browser.find_element(By.CLASS_NAME, "hudson_matrix_MatrixProject").click()
 
     browser.find_element(By.ID, "name").send_keys(f"{multiconfiguration_project_name}{special_characters}")
 
     error_message = WebDriverWait(browser, 5).until(
         EC.visibility_of_element_located((By.ID, "itemname-invalid"))).text
 
-    assert error_message == f"» ‘{special_characters}’ is an unsafe character"
+    expected_error_message = f"‘{special_characters}’ is an unsafe character"
+    assert error_message == "» " + f"‘{special_characters}’ is an unsafe character"
+
+    browser.find_element(By.ID, "ok-button").click()
+    assert browser.find_element(By.TAG_NAME, "p").text == expected_error_message
