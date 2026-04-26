@@ -36,6 +36,7 @@ def test_create_folder_with_display_name(browser):
          line.startswith("Folder name: ")][0]
     assert folder_name_line == f"Folder name: {FOLDER_NAME}"
 
+
 def test_create_folder_with_description(browser):
     description = "Description"
 
@@ -45,6 +46,7 @@ def test_create_folder_with_description(browser):
     browser.find_element(By.NAME, "_.description").send_keys(description)
     browser.find_element(By.NAME, "Submit").click()
     assert browser.find_element(By.ID, "view-message").text == description
+
 
 def test_create_new_folder(browser):
     name = "new_folder"
