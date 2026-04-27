@@ -10,11 +10,10 @@ from common.project_utils import get_browser, get_options, get_url
 def browser(request):
     get_browser()
 
-    print(f"\n{request.node.path.name}::{request.node.name}")
     dependency_marker = request.node.get_closest_marker("dependency")
     depends = dependency_marker.kwargs.get("depends") if dependency_marker else None
     if not depends:
-        print("clearing data")
+        print("\nclearing data")
         clear_data()
 
     options = webdriver.ChromeOptions()
