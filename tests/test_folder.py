@@ -135,9 +135,12 @@ def test_create_folder_with_duplicate_name_in_same_parent_negative(browser):
     assert error_message == f"» A job already exists with the name ‘{FOLDER_NAME}’"
 
 
-@pytest.mark.parametrize('execution_number', range(10))
-def test_create_folder_with_same_name_in_different_parent(browser, execution_number):
+def test_create_folder_with_same_name_in_different_parent(browser):
     create_folder(browser, FOLDER_NAME)
+    first_folder_name = browser.find_element(By.CLASS_NAME, "job-index-headline").text
+    first_breadcrumbs = [
+        crumb.text for crumb in browser.find_elements(By.CSS_SELECTOR, ".jenkins-breadcrumbs__list-item")
+    ]
 
     browser.execute_script("""
         var logo = document.querySelector('.jenkins-mobile-hide');
@@ -146,3 +149,10 @@ def test_create_folder_with_same_name_in_different_parent(browser, execution_num
 
     create_folder(browser, "ParentFolder")
     create_folder(browser, FOLDER_NAME)
+    second_folder_name = browser.find_element(By.CLASS_NAME, "job-index-headline").text
+    second_breadcrumbs = [
+        crumb.text for crumb in browser.find_elements(By.CSS_SELECTOR, ".jenkins-breadcrumbs__list-item")
+    ]
+
+    assert first_folder_name == second_folder_name
+    assert first_breadcrumbs != second_breadcrumbs
