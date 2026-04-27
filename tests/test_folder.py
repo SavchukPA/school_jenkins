@@ -139,10 +139,10 @@ def test_create_folder_with_duplicate_name_in_same_parent_negative(browser):
 def test_create_folder_with_same_name_in_different_parent(browser, execution_number):
     create_folder(browser, FOLDER_NAME)
 
-    logo = WebDriverWait(browser, 5).until(
-        EC.presence_of_element_located((By.CLASS_NAME, "jenkins-mobile-hide"))
-    )
-    browser.execute_script("arguments[0].click();", logo)
+    browser.execute_script("""
+        var logo = document.querySelector('.jenkins-mobile-hide');
+        if (logo) logo.click();
+    """)
 
     create_folder(browser, "ParentFolder")
     create_folder(browser, FOLDER_NAME)
