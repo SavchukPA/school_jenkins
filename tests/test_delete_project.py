@@ -34,7 +34,6 @@ def generate_project_name():
     return ''.join(random.choice(chars) for _ in range(10))
 
 def create_job(click, fill, check_visibility, current_project_name, item_type=PIPELINE_ITEM_TYPE):
-
     click(NEW_ITEM_BUTTON)
 
     fill(INPUT_NEW_ITEM_FIELD, current_project_name)
@@ -48,7 +47,6 @@ def create_job(click, fill, check_visibility, current_project_name, item_type=PI
     check_visibility(JENKINS_LOGO)
 
 def test_delete_job(browser, click, fill, check_visibility):
-
     current_project_name = generate_project_name()
 
     create_job(click, fill, check_visibility, current_project_name)
@@ -63,7 +61,6 @@ def test_delete_job(browser, click, fill, check_visibility):
     assert browser.find_element(By.XPATH, "//h2[text()='Not Found']").text == "Not Found"
 
 def test_cancel_delete_job(browser, click, fill, check_visibility):
-
     current_project_name = generate_project_name()
 
     create_job(click, fill, check_visibility, current_project_name)

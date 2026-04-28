@@ -27,7 +27,6 @@ def test_rename_by_empty_string(browser, click, fill,check_visibility):
     assert browser.find_element(By.XPATH, "//div[@class='error']").text == "No name is specified"
 
 @pytest.mark.parametrize("invalid_character", ["!", "/", "\\", "?", "%", "*", ":", "|", "<", ">", "#"])
-
 def test_rename_by_invalid_characters(browser, click, fill,check_visibility, invalid_character):
     create_multibranch_and_go__to_rename_page(browser, click, fill, check_visibility)
 
@@ -38,7 +37,6 @@ def test_rename_by_invalid_characters(browser, click, fill,check_visibility, inv
     res = wait10.until(EC.text_to_be_present_in_element((By.XPATH, "//div[@class='error']"), f"‘{invalid_character}’ is an unsafe character"))
 
     assert res == True
-
 
 def test_rename_by_same_name(browser, click, fill, check_visibility):
     current_project_name = create_multibranch_and_go__to_rename_page(browser, click, fill, check_visibility)
