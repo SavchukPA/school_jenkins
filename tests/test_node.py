@@ -1,7 +1,5 @@
 import pytest
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
 new_node_name = "New Test Node"
 description = "Use only for urgent tasks"
@@ -35,6 +33,7 @@ def mark_node_offline(browser, go_to_node_management_page):
 @pytest.fixture
 def bring_node_online(browser, mark_node_offline):
     browser.find_element(By.XPATH, "//button [@value ='Bring this node back online']").click()
+    browser.find_element(By.XPATH, "//form [@action='markOffline']")
 
 def test_create_node(browser):
 
@@ -85,8 +84,8 @@ def test_bring_node_online(browser, mark_node_offline):
 
 def test_delete_node(browser, bring_node_online):
 
-    WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.CLASS_NAME, "icon-edit-delete"))).click()
-    WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.XPATH, "//button [@data-id='ok']"))).click()
+    browser.find_element(By.CLASS_NAME, "icon-edit-delete").click()
+    browser.find_element(By.XPATH, "//button [@data-id='ok']").click()
 
     actual_node_list = browser.find_elements(By.XPATH, "//a[@class = 'jenkins-table__link model-link inside']")
 
