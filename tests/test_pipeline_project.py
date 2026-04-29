@@ -23,7 +23,7 @@ def create_pipeline_project(browser, name):
 
 def test_create_project(browser):
     create_pipeline_project(browser, pipeline_name)
-    created_pipeline = browser.find_element(By.XPATH, f"(//a[@href='job/{pipeline_name}/'])[1]").text
+    created_pipeline = browser.find_element(By.CSS_SELECTOR, ".jenkins-table__link >span:first-child").text
 
     assert created_pipeline == pipeline_name
 
