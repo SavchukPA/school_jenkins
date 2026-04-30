@@ -11,3 +11,10 @@ def test_verify_navigation_to_manage_page(browser):
     wait.until(EC.url_contains("/manage"))
 
     assert "/manage" in browser.current_url
+
+
+
+def test_manaje_jenkins_icon_is_visible(browser):
+    wait = WebDriverWait(browser, 10)
+
+    assert wait.until(EC.visibility_of_element_located((By.ID, "root-action-ManageJenkinsAction"))).is_displayed()
