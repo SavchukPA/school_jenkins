@@ -30,6 +30,11 @@ def mark_node_offline(browser, go_to_node_management_page):
     browser.find_element(By.XPATH, "//form [@action='markOffline']").click()
     browser.find_element(By.XPATH, "//*[@id='main-panel']/form/p/button").click()
 
+@pytest.fixture
+def bring_node_online(browser, mark_node_offline):
+    browser.find_element(By.XPATH, "//button [@value ='Bring this node back online']").click()
+    browser.find_element(By.XPATH, "//form [@action='markOffline']")
+
 def test_create_node(browser):
 
     browser.find_element(By.ID, "root-action-ManageJenkinsAction").click()
@@ -76,3 +81,15 @@ def test_bring_node_online(browser, mark_node_offline):
     browser.find_element(By.XPATH, "//button [@value ='Bring this node back online']").click()
 
     assert browser.find_element(By.XPATH, "//form [@action='markOffline']").text == "Mark this node temporarily offline"
+
+def test_delete_node(browser, bring_node_online):
+
+    browser.find_element(By.CLASS_NAME, "icon-edit-delete").click()
+    browser.find_element(By.XPATH, "//button [@data-id='ok']").click()
+
+    actual_node_list = browser.find_elements(By.XPATH, "//a[@class = 'jenkins-table__link model-link inside']")
+
+    node_names = [node.text for node in actual_node_list]
+
+    assert new_node_name not in node_names
+
