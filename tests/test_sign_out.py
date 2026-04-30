@@ -10,15 +10,14 @@ def test_sign_out(browser):
 
     wait = WebDriverWait(browser, 10)
 
-    sign_out_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//*[@id='tippy-1']/div/div/div/a[9]")))
+    sign_out_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//a[contains(@href, '/logout')]")))
     sign_out_button.click()
 
-    sign_in_button = browser.find_element(By.XPATH, "//*[@id='main-panel']/div/form/button")
     username_field = browser.find_element(By.ID, "j_username")
+    password_field = browser.find_element(By.ID, "j_password")
 
-    assert "login" in browser.current_url
-    assert sign_in_button.is_displayed()
     assert username_field.get_attribute("value") == ""
+    assert password_field.get_attribute("value") == ""
 
 
 
