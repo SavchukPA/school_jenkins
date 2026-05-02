@@ -6,7 +6,7 @@ from selenium.webdriver.support.ui import Select
 def test_add_credentials_ssh_username(browser):
     browser.find_element(By.ID, 'root-action-ManageJenkinsAction').click()
     browser.find_element(By.XPATH, "//*[@href='credentials']").click()
-    browser.find_element(By.XPATH, "(//button[@class='jenkins-menu-dropdown-chevron'])[2]").click()
+    browser.find_element(By.XPATH, "//a[normalize-space()='(global)']").click()
     wait = WebDriverWait(browser, 10)
     wait.until(EC.visibility_of_element_located((By.XPATH, "(//a[normalize-space()='Add credentials'])[1]"))).click()
 
