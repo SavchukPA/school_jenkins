@@ -31,8 +31,8 @@ def test_not_apply_change_theme(browser):
 
     browser.find_element(By.ID, 'root-action-UserAction').click()
 
-    browser.find_element(By.XPATH, '//a[span and contains(@href, "appearance")]').click()
-    browser.find_element(By.XPATH, f'//label[./div[@data-theme = "dark"]]').click()
+    browser.find_element(By.XPATH, '//*[@id="tasks"]/div[5]/span/a').click()
+    browser.find_element(By.XPATH, f'//label[./div[@data-theme = "{standard_themes_values.get("dark")}"]]').click()
 
     browser.find_element(By.XPATH, f'//a[./span/text()="Profile"]').click()
 
