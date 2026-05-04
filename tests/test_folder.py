@@ -7,7 +7,6 @@ from selenium.webdriver.common.keys import Keys
 FOLDER_NAME = "TestFolder"
 SECOND_FOLDER_NAME = "SecondFolder"
 
-
 def create_folder(driver, name, full_creation=True):
     driver.find_element(By.XPATH, "//a[contains(@href, '/newJob')]").click()
     driver.find_element(By.ID, "name").send_keys(name)
@@ -27,7 +26,6 @@ def test_create_folder(browser):
     assert f"/job/{FOLDER_NAME}/" in browser.current_url
     assert browser.find_element(By.CLASS_NAME, "job-index-headline").text == FOLDER_NAME
 
-
 def test_create_folder_with_display_name(browser):
     display_name = "Display Folder"
 
@@ -44,7 +42,6 @@ def test_create_folder_with_display_name(browser):
          line.startswith("Folder name: ")][0]
     assert folder_name_line == f"Folder name: {FOLDER_NAME}"
 
-
 def test_create_folder_with_description(browser):
     description = "Description"
 
@@ -57,7 +54,6 @@ def test_create_folder_with_description(browser):
 
     assert browser.find_element(By.ID, "view-message").text == description
 
-@pytest.mark.skip
 def test_create_new_folder(browser):
     name = "new_folder"
 
@@ -89,7 +85,6 @@ def test_create_nested_folder(browser):
     ]
     assert breadcrumb_texts == [FOLDER_NAME, SECOND_FOLDER_NAME]
 
-
 def test_create_folder_with_empty_name_negative(browser):
     browser.find_element(By.XPATH, "//a[@href='/view/all/newJob']").click()
 
@@ -99,7 +94,6 @@ def test_create_folder_with_empty_name_negative(browser):
     assert browser.find_element(By.ID,
                                 "itemname-required").text == "» This field cannot be empty, please enter a valid name"
     assert not browser.find_element(By.ID, "ok-button").is_enabled()
-
 
 @pytest.mark.parametrize("character", ["/", "\\", "|", "?", "*", ":", ">", "<"])
 def test_create_folder_with_invalid_characters_negative(browser, character):
@@ -138,7 +132,6 @@ def test_create_folder_with_same_name_in_different_parent(browser):
     create_folder(browser, SECOND_FOLDER_NAME)
 
     assert browser.find_element(By.CLASS_NAME, "job-index-headline").text == SECOND_FOLDER_NAME
-
 
 @pytest.mark.dependency()
 def test_create_test_folder(browser):
