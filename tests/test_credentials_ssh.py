@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
-test_id = "testID"
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 def test_add_credentials_ssh_username(browser):
 
@@ -12,7 +13,7 @@ def test_add_credentials_ssh_username(browser):
     browser.find_element(By.ID, 'cr-dialog-next').click()
 
     Select(browser.find_element(By.NAME,'_.scope')).select_by_value('SYSTEM')
-    browser.find_element(By.NAME,'_.id').send_keys(test_id)
+    browser.find_element(By.NAME,'_.id').send_keys("testID")
     browser.find_element(By.NAME,'_.description').send_keys("testDescription")
     browser.find_element(By.NAME,'_.username').send_keys("testUsername")
     browser.find_element(By.XPATH, "//label[normalize-space()='Treat username as secret']").click()
@@ -22,5 +23,6 @@ def test_add_credentials_ssh_username(browser):
     browser.find_element(By.NAME, '_.passphrase').send_keys("testPassphrase")
     browser.find_element(By.ID, 'cr-dialog-submit').click()
 
-    assert browser.find_element(By.XPATH, "//a[normalize-space()='testID']").text == test_id
-
+    WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.XPATH, "//*[contains(@class,'credentials-card') and contains(.,'testID')]")))
+    cards = browser.find_elements(By.CSS_SELECTOR, ".credentials-card")
+    assert any("testID" in card.text for card in cards)
