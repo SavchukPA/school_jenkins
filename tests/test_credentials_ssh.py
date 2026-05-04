@@ -23,3 +23,4 @@ def test_add_credentials_ssh_username(browser):
     browser.find_element(By.ID, 'cr-dialog-submit').click()
 
     assert browser.find_element(By.XPATH, "//a[normalize-space()='testID']").text == test_id
+
