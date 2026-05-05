@@ -1,10 +1,9 @@
 from selenium.webdriver.common.by import By
-import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import pytest
 
-FREESTYLE_PROJECT_NAME = f"freestyle_project_{int(time.time())}"
+FREESTYLE_PROJECT_NAME = "freestyle_project"
 description = "Description Freestyle Project"
 
 
