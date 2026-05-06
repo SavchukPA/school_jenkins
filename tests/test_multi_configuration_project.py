@@ -22,7 +22,6 @@ def create_multi_configuration_project(browser, name):
                     if (logo) logo.click();
                 """)
 
-@pytest.mark.skip(reason="ER_01.001.19")
 def test_verify_status_switching_enable_button(browser):
     create_multi_configuration_project(browser, multiconfiguration_project_name)
     browser.find_element(By.CSS_SELECTOR, ".jenkins-table__link >span:first-child").click()
@@ -36,7 +35,6 @@ def test_verify_status_switching_enable_button(browser):
 
     assert "This project is currently disabled" in actual_disable_text
 
-@pytest.mark.skip(reason="fails in CI")
 def test_verify_enable_toggle_has_tooltip(browser):
     create_multi_configuration_project(browser, multiconfiguration_project_name)
     browser.find_element(By.CSS_SELECTOR, ".jenkins-table__link >span:first-child").click()
@@ -89,3 +87,17 @@ def test_create_project_with_exist_name(browser):
     expected_error_message = f"A job already exists with the name ‘{multiconfiguration_project_name}’"
     assert error_message == "» " + expected_error_message
     assert not browser.find_element(By.ID, "ok-button").is_enabled()
+
+@pytest.mark.dependency(depends=["test_create_multi_configuration_project"])
+def test_search_created_project(browser):
+    browser.find_element(By.ID, "root-action-SearchAction").click()
+
+    browser.find_element(By.ID, "command-bar").send_keys(multiconfiguration_project_name)
+    search_result = WebDriverWait(browser, 10).until(
+         EC.element_to_be_clickable((By.XPATH, "//a[contains(@class, 'jenkins-command-palette__results__item')]")))
+
+    actions = ActionChains(browser)
+    actions.move_to_element(search_result).perform()
+    search_result.click()
+
+    assert browser.find_element(By.TAG_NAME, "h1").text == multiconfiguration_project_name
