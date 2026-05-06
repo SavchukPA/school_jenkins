@@ -101,4 +101,4 @@ def test_search_created_project(browser):
     search_result.click()
 
     assert WebDriverWait(browser, 10).until(
-         EC.visibility_of_element_located(By.TAG_NAME, "h1")).text == multiconfiguration_project_name
+         EC.visibility_of_element_located((By.TAG_NAME, "h1"))).text == multiconfiguration_project_name
