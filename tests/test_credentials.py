@@ -79,7 +79,7 @@ def test_create(browser):
 
     assert credential_card.is_displayed(), "Credential card was not found or not visible"
 
-@pytest.mark.skip()
+
 @pytest.mark.dependency(depends=["test_create"])
 def test_create_duplicate_id_error_validation(browser):
     expected_error = "This ID is already in use"
@@ -122,7 +122,6 @@ def test_delete(browser):
 @pytest.mark.parametrize("special_characters ",[
     "!", "%", "&", "#", "@", "*"
 ])
-@pytest.mark.skip()
 def test_create_id_with_special_characters(browser, special_characters):
     expected_error = "Unacceptable characters"
 
