@@ -38,3 +38,18 @@ def test_rename_freestyle_project_page_from_project_page(browser):
 
     rename_page_title = browser.find_element(By.TAG_NAME, 'h1').text
     assert rename_page_title == f'Rename Project {FREESTYLE_PROJECT_NAME}'
+
+
+@pytest.mark.dependency(depends=["test_create_freestyle_project"])
+@pytest.mark.parametrize("special_character", ['?', '*', '/', '!'])
+def test_special_characters_in_rename_field(browser, special_character):
+    wait = WebDriverWait(browser, 10)
+    wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, f'[href="job/{FREESTYLE_PROJECT_NAME}/"]'))).click()
+    wait.until(EC.visibility_of_element_located((By.PARTIAL_LINK_TEXT, 'Rename'))).click()
+
+    wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '[checkdependson="newName"]'))).clear()
+    browser.find_element(By.CSS_SELECTOR, '[checkdependson="newName"]').send_keys(special_character)
+    browser.find_element(By.ID, 'main-panel').click()
+
+    error = wait.until(EC.visibility_of_element_located((By.XPATH, f'//div[@class="error"][contains(text(), "{special_character}")]'))).text
+    assert error == f"‘{special_character}’ is an unsafe character"
