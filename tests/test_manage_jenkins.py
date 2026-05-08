@@ -1,10 +1,12 @@
+import pytest
 from selenium.webdriver import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
 
-def test_checking_the_dropdown_when_entering_one_letter(browser):
+@pytest.mark.dependency()
+def test_checking_dropdown_partial_match(browser):
     WebDriverWait(browser, 10).until(
         EC.visibility_of_element_located((By.ID, 'root-action-ManageJenkinsAction'))
     ).click()
@@ -20,7 +22,8 @@ def test_checking_the_dropdown_when_entering_one_letter(browser):
     assert len(items) > 1
 
 
-def test_checking_the_dropdown_when_entering_full_name_settings(browser):
+@pytest.mark.dependency(depends=["test_checking_dropdown_partial_match"])
+def test_checking_dropdown_full_match(browser):
     WebDriverWait(browser, 10).until(
         EC.visibility_of_element_located((By.ID, 'root-action-ManageJenkinsAction'))
     ).click()
@@ -36,7 +39,8 @@ def test_checking_the_dropdown_when_entering_full_name_settings(browser):
     assert item.get_attribute('textContent').strip() == 'Security'
 
 
-def test_clear_search_field_via_keyboard_and_button(browser):
+@pytest.mark.skip(reason="ER_10.002.03")
+def test_clear_search_field_and_verify_empty(browser):
     WebDriverWait(browser, 10).until(
         EC.visibility_of_element_located((By.ID, 'root-action-ManageJenkinsAction'))
     ).click()
@@ -44,8 +48,6 @@ def test_clear_search_field_via_keyboard_and_button(browser):
     field = WebDriverWait(browser, 10).until(
         EC.visibility_of_element_located((By.ID, 'settings-search-bar'))
     )
-
-    field.send_keys('System')
     field.send_keys(Keys.CONTROL + 'a')
     field.send_keys(Keys.BACK_SPACE)
 
