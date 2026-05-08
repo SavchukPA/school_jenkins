@@ -6,6 +6,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 def test_sign_out(browser):
     wait = WebDriverWait(browser, 5)
+
     ActionChains(browser).move_to_element(
         browser.find_element(By.ID, "root-action-UserAction")
     ).perform()
