@@ -55,9 +55,8 @@ def test_enable_disabled_project_using_enable_button(browser):
         EC.element_to_be_clickable((By.CSS_SELECTOR, "button.jenkins-menu-dropdown-chevron"))
     ).click()
     wait.until(
-        EC.presence_of_element_located((By.XPATH, "//a[contains(@href, 'configure')]"))
-    )
-    browser.find_element(By.XPATH, "//a[contains(@href, 'configure')]").click()
+        EC.element_to_be_clickable((By.XPATH, "//a[contains(@href, 'configure')]"))
+    ).click()
     browser.find_element(By.XPATH, "//a[@href='/job/Test/']").click()
 
     wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button[name='Submit'][value='Enable']"))).click()
