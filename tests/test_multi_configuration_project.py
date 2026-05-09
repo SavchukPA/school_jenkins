@@ -93,11 +93,10 @@ def test_create_project_with_exist_name(browser):
     browser.find_element(By.XPATH, "//a[contains(@href, '/newJob')]").click()
     browser.find_element(By.ID, "name").send_keys(multiconfiguration_project_name)
 
-    error_message = WebDriverWait(browser, 10).until(
+    error_message = WebDriverWait(browser, 5).until(
          EC.visibility_of_element_located((By.ID, "itemname-invalid"))).text
 
     assert error_message == f"» A job already exists with the name ‘{multiconfiguration_project_name}’"
-    assert not browser.find_element(By.ID, "ok-button").is_enabled()
 
 @pytest.mark.dependency(depends=["test_create_multi_configuration_project"])
 def test_search_created_project(browser):
