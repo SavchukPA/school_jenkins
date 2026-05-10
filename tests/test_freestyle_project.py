@@ -3,6 +3,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import pytest
 
+from conftest import browser
+
 FREESTYLE_PROJECT_NAME = "freestyle_project"
 description = "Description Freestyle Project"
 
@@ -67,3 +69,24 @@ def test_blank_rename_field(browser):
 
     error = wait.until(EC.visibility_of_element_located((By.CLASS_NAME, 'error'))).text
     assert error == 'No name is specified'
+
+@pytest.mark.dependency(depends=["test_create_freestyle_project"])
+def test_enable_delete_workspace_before_build_starts(browser):
+    wait = WebDriverWait(browser, 10)
+
+    (wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, f'[href="job/{FREESTYLE_PROJECT_NAME}/"]'))).
+        click())
+
+    (wait.until(EC.element_to_be_clickable((By.XPATH, "//a[contains(@href,'configure')]"))).
+        click())
+
+    checkbox_label = wait.until(EC.element_to_be_clickable((By.XPATH,"//label[contains(.,'Delete workspace before build starts')]")))
+    browser.execute_script("arguments[0].scrollIntoView({block:'center'});",checkbox_label)
+    checkbox_label.click()
+    browser.find_element(By.NAME, "Submit").click()
+
+    (wait.until(EC.element_to_be_clickable((By.XPATH, "//a[contains(@href,'configure')]"))).
+        click())
+
+    actual_checkbox = wait.until(EC.presence_of_element_located((By.NAME, "hudson-plugins-ws_cleanup-PreBuildCleanup")))
+    assert actual_checkbox.is_selected()
