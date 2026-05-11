@@ -13,7 +13,9 @@ class FreestyleConfigPage(BasePage):
         return self
 
     def save(self):
-        self.wait10.until(EC.element_to_be_clickable((By.NAME, "Submit"))).click()
+        button = self.driver.find_element(By.NAME, "Submit")
+        button.click()
+        self.wait10.until(EC.staleness_of(button))
 
         return ProjectPage(self.driver)
 
