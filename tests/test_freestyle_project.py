@@ -3,8 +3,16 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import pytest
 
+from conftest import browser
+
 FREESTYLE_PROJECT_NAME = "freestyle_project"
 description = "Description Freestyle Project"
+
+
+def open_rename_page(driver):
+    wait = WebDriverWait(driver, 10)
+    wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, f'[href="job/{FREESTYLE_PROJECT_NAME}/"]'))).click()
+    wait.until(EC.visibility_of_element_located((By.PARTIAL_LINK_TEXT, 'Rename'))).click()
 
 
 @pytest.mark.dependency()
@@ -22,9 +30,8 @@ def test_create_freestyle_project(browser):
 
 @pytest.mark.dependency(depends=["test_create_freestyle_project"])
 def test_rename_freestyle_project_page_from_dashboard(browser):
+    open_rename_page(browser)
     wait = WebDriverWait(browser, 5)
-    wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, f'[href="job/{FREESTYLE_PROJECT_NAME}/"]>.jenkins-menu-dropdown-chevron'))).click()
-    wait.until(EC.visibility_of_element_located((By.PARTIAL_LINK_TEXT, 'Rename'))).click()
 
     rename_page_title = wait.until(EC.visibility_of_element_located((By.TAG_NAME, 'h1'))).text
     assert rename_page_title == f'Rename Project {FREESTYLE_PROJECT_NAME}'
@@ -43,13 +50,43 @@ def test_rename_freestyle_project_page_from_project_page(browser):
 @pytest.mark.dependency(depends=["test_create_freestyle_project"])
 @pytest.mark.parametrize("special_character", ['?', '*', '/', '!'])
 def test_special_characters_in_rename_field(browser, special_character):
+    open_rename_page(browser)
     wait = WebDriverWait(browser, 10)
-    wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, f'[href="job/{FREESTYLE_PROJECT_NAME}/"]'))).click()
-    wait.until(EC.visibility_of_element_located((By.PARTIAL_LINK_TEXT, 'Rename'))).click()
-
     wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '[checkdependson="newName"]'))).clear()
     browser.find_element(By.CSS_SELECTOR, '[checkdependson="newName"]').send_keys(special_character)
     browser.find_element(By.ID, 'main-panel').click()
 
     error = wait.until(EC.visibility_of_element_located((By.XPATH, f'//div[@class="error"][contains(text(), "{special_character}")]'))).text
     assert error == f"‘{special_character}’ is an unsafe character"
+
+
+@pytest.mark.dependency(depends=["test_create_freestyle_project"])
+def test_blank_rename_field(browser):
+    open_rename_page(browser)
+    wait = WebDriverWait(browser, 10)
+    wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '[checkdependson="newName"]'))).clear()
+    browser.find_element(By.ID, 'main-panel').click()
+
+    error = wait.until(EC.visibility_of_element_located((By.CLASS_NAME, 'error'))).text
+    assert error == 'No name is specified'
+
+@pytest.mark.dependency(depends=["test_create_freestyle_project"])
+def test_enable_delete_workspace_before_build_starts(browser):
+    wait = WebDriverWait(browser, 10)
+
+    (wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, f'[href="job/{FREESTYLE_PROJECT_NAME}/"]'))).
+        click())
+
+    (wait.until(EC.element_to_be_clickable((By.XPATH, "//a[contains(@href,'configure')]"))).
+        click())
+
+    checkbox_label = wait.until(EC.element_to_be_clickable((By.XPATH,"//label[contains(.,'Delete workspace before build starts')]")))
+    browser.execute_script("arguments[0].scrollIntoView({block:'center'});",checkbox_label)
+    checkbox_label.click()
+    browser.find_element(By.NAME, "Submit").click()
+
+    (wait.until(EC.element_to_be_clickable((By.XPATH, "//a[contains(@href,'configure')]"))).
+        click())
+
+    actual_checkbox = wait.until(EC.presence_of_element_located((By.NAME, "hudson-plugins-ws_cleanup-PreBuildCleanup")))
+    assert actual_checkbox.is_selected()
