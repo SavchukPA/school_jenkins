@@ -55,8 +55,8 @@ def test_build_queue_visibility(browser):
          .button_add_build_step_click()
          .select_option_execute_shell_in_add_build_step_click()
          .set_shell_script("echo $EXECUTOR_NUMBER\npwd\nls -lsa /\nsleep 60")
-         .save()
-         .jenkins_logo_click()
+         .button_save_click()
+         .go_home_page()
          .schedule_build_click(job_name))
 
     list_jobs_name = HomePage(browser).get_names_jobs_list_build_queue()

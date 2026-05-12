@@ -12,7 +12,7 @@ class FreestyleConfigPage(BasePage):
 
         return self
 
-    def save(self):
+    def button_save_click(self):
         button = self.driver.find_element(By.NAME, "Submit")
         button.click()
         self.wait10.until(EC.staleness_of(button))
