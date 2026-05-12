@@ -1,8 +1,4 @@
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-
-import pages
 
 
 class BasePage:
@@ -10,7 +6,12 @@ class BasePage:
         self.driver = driver
         self.wait10 = WebDriverWait(driver, timeout)
 
-    def jenkins_logo_click(self):
-        self.driver.find_element(By.CLASS_NAME, "app-jenkins-logo").click()
+    def go_home_page(self):
+        from pages.home_page import HomePage
 
-        return pages.home_page.HomePage(self.driver)
+        self.driver.execute_script("""
+            var logo = document.querySelector('.jenkins-mobile-hide');
+            if (logo) logo.click();
+        """)
+
+        return HomePage(self.driver)

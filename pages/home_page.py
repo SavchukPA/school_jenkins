@@ -13,6 +13,12 @@ class HomePage(BasePage):
 
         return NewItemPage(self.driver)
 
+    def get_project_names_list(self):
+        project_elements = self.driver.find_elements(By.CLASS_NAME, "jenkins-table__link")
+        project_names = [element.text for element in project_elements]
+
+        return project_names
+
     def schedule_build_click(self, job_name: str):
         self.driver.find_element(By.XPATH, f"//tr/td[7]//a[@tooltip='Schedule a Build for {job_name}']").click()
 
