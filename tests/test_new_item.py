@@ -1,70 +1,44 @@
-import random
-import string
+import time
 import pytest
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
-invalid_character = ['?', '*', '/', '!', '%', '$', '&', ';', ':', '@', '>']
-empty_values = ['', ' ']
-item_types = ["Pipeline", "Freestyle project", "Multi-configuration project", "Folder", "Multibranch Pipeline",
-           "Organization Folder"]
+from conftest import driver
+from pages.new_item_page.new_item_page import NewItemPage
+from pages.item_page.item_page import ItemPage
 
-@pytest.mark.dependency()
-def test_open_new_item_page(browser):
-    element = browser.find_element(By.XPATH, '//a[contains(., "New Item")]')
-    element.click()
-    assert "New Item" in browser.title
 
-@pytest.mark.dependency(depends=["test_open_new_item_page"])
-@pytest.mark.parametrize("input_invalid_char", invalid_character)
-def test_validate_invalid_item_name(browser, input_invalid_char):
-    browser.find_element(By.XPATH,'//a[contains(., "New Item")]').click()
-    input_field = browser.find_element(By.XPATH,"//input[@name='name']")
-    input_field.clear()
-    browser.find_element(By.XPATH, "//input[@name='name']").send_keys(input_invalid_char)
-    browser.find_element(By.XPATH, "//div[@id='page-body']").click()
-    WebDriverWait(browser, 10).until(EC.visibility_of_element_located((By.XPATH, "//div[@id='itemname-invalid']")))
-    locator = "//div[@id='itemname-invalid']"
-    expected = f"» ‘{input_invalid_char}’ is an unsafe character"
-    result = browser.find_element(By.XPATH, locator).text
-    assert expected in result
-
-@pytest.mark.dependency(depends=["test_open_new_item_page"])
-@pytest.mark.parametrize("input_empty_values", empty_values)
-def test_validate_empty_values(browser, input_empty_values):
-    browser.find_element(By.XPATH, '//a[contains(., "New Item")]').click()
-    input_field = browser.find_element(By.XPATH, "//input[@name='name']")
-    input_field.clear()
-    browser.find_element(By.XPATH, "//input[@name='name']").send_keys(input_empty_values)
-    browser.find_element(By.XPATH, "//div[@id='page-body']").click()
-    WebDriverWait(browser,10).until(
-        EC.visibility_of_element_located((By.XPATH, "//div[@id='itemname-required']"))
+@pytest.mark.dependency(name="test_create_item")
+def test_create_item(driver):
+    ex_test_folder_name = "Test Folder"
+    ex_test_folder_description = "Test Folder Description"
+    new_item_p = NewItemPage(driver=driver)
+    new_item_p.create_item(
+        name=ex_test_folder_name,
+        description=ex_test_folder_description,
+        type_item="Folder",
     )
-    locator = "//div[@id='itemname-required']"
-    expected = "» This field cannot be empty, please enter a valid name"
-    result = browser.find_element(By.XPATH, locator).text
-    assert expected in result
+    item_page = ItemPage(driver=driver)
+    ac_item_title = item_page.get_item_name()
+    ac_item_description = item_page.get_item_description()
+    assert ex_test_folder_description in ac_item_description
+    assert ex_test_folder_name in ac_item_title
 
-@pytest.mark.dependency(depends=["test_open_new_item_page"])
-@pytest.mark.parametrize("input_item_types", item_types)
-def test_create_new_item(browser, input_item_types):
-    random_name = "item" + ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
-    browser.find_element(By.XPATH, '//a[contains(., "New Item")]').click()
-    input_field = browser.find_element(By.XPATH, "//input[@name='name']")
-    input_field.clear()
-    WebDriverWait(browser,10).until(EC.element_to_be_clickable((By.ID, "name"))).send_keys(random_name)
-    item_type = WebDriverWait(browser, 10).until(
-        EC.element_to_be_clickable(
-            (By.XPATH, f"//span[@class='label' and text()='{input_item_types}']"))
-    )
-    browser.execute_script("arguments[0].scrollIntoView(true);", item_type)
-    item_type.click()
-    WebDriverWait(browser,10).until(EC.element_to_be_clickable((By.ID, "ok-button"))).click()
-    WebDriverWait(browser,10).until(EC.visibility_of_element_located((By.XPATH, "//h2[@id='general']")))
-    WebDriverWait(browser,10).until(EC.element_to_be_clickable((By.ID, 'jenkins-head-icon'))).click()
-    WebDriverWait(browser,10).until(EC.visibility_of_element_located((By.ID, 'jenkins-head-icon')))
-    result = browser.find_element(By.XPATH,
-                                  f"//a[@class='jenkins-table__link model-link inside']/span[text()='{random_name}']").text
 
-    assert random_name == result
+@pytest.mark.dependency(name="test_rename_item", depends=["test_create_item"])
+def test_rename_item(driver):
+    current_name = "Test Folder"
+    new_name = "New Folder"
+    item_page = ItemPage(driver=driver, name=current_name)
+    item_page.update_item(new_name=new_name)
+    ac_item_title = item_page.get_item_name()
+
+    assert new_name in ac_item_title
+
+
+@pytest.mark.dependency(name="delete_item", depends=["test_rename_item"])
+def test_delete_item(driver):
+    name = "New Folder"
+    item_page = ItemPage(driver=driver, name=name)
+    item_page.delete_item()
+    time.sleep(1)
+    res_delete_item = item_page.home_page.check_invisible_item_in_table(name=name)
+    assert res_delete_item is True

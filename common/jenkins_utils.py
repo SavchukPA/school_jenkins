@@ -24,7 +24,10 @@ class _HttpResponse:
 
 
 class JenkinsUtils:
-    _HEADER_FORM: tuple[str, str] = ("Content-Type", "application/x-www-form-urlencoded")
+    _HEADER_FORM: tuple[str, str] = (
+        "Content-Type",
+        "application/x-www-form-urlencoded",
+    )
     _opener = build_opener(HTTPCookieProcessor(CookieJar()))
     _header_authorization: tuple[str, str] | None = None
     _header_crumb: tuple[str, str] | None = None
@@ -55,7 +58,9 @@ class JenkinsUtils:
             raise RuntimeError(f"HTTP request failed for {url}") from error
 
     @classmethod
-    def _get_http(cls, url: str, headers: list[tuple[str, str]] | None = None) -> _HttpResponse:
+    def _get_http(
+        cls, url: str, headers: list[tuple[str, str]] | None = None
+    ) -> _HttpResponse:
         return cls._request("GET", url, headers=headers)
 
     @classmethod
@@ -66,8 +71,13 @@ class JenkinsUtils:
     def _get_header_authorization(cls) -> tuple[str, str]:
         if cls._header_authorization is None:
             credentials = f"{get_user_name()}:{get_password()}"
-            encoded_credentials = base64.b64encode(credentials.encode("utf-8")).decode("ascii")
-            cls._header_authorization = ("Authorization", f"Basic {encoded_credentials}")
+            encoded_credentials = base64.b64encode(credentials.encode("utf-8")).decode(
+                "ascii"
+            )
+            cls._header_authorization = (
+                "Authorization",
+                f"Basic {encoded_credentials}",
+            )
 
         return cls._header_authorization
 
@@ -92,7 +102,11 @@ class JenkinsUtils:
 
     @classmethod
     def _get_default_headers(cls) -> list[tuple[str, str]]:
-        return [cls._HEADER_FORM, cls._get_header_authorization(), cls._get_header_crumb()]
+        return [
+            cls._HEADER_FORM,
+            cls._get_header_authorization(),
+            cls._get_header_crumb(),
+        ]
 
     @classmethod
     def _get_crumb_as_string(cls) -> str:
@@ -124,7 +138,9 @@ class JenkinsUtils:
 
     @classmethod
     def _get_page(cls, uri: str) -> str:
-        page_response = cls._get_http(f"{get_url()}{uri}", headers=cls._get_default_headers())
+        page_response = cls._get_http(
+            f"{get_url()}{uri}", headers=cls._get_default_headers()
+        )
         if page_response.status_code != 200:
             raise RuntimeError("Something went wrong while clearing data")
 
@@ -205,7 +221,7 @@ class JenkinsUtils:
         crumb = cls._get_crumb_as_string()
         body = (
             f"description=&Submit=&{crumb}&"
-            f'json=%7B%22description%22%3A+%22%22%2C+%22Submit%22%3A+%22%22%2C+%22Jenkins-Crumb%22%3A+%22{crumb}%22%7D'
+            f"json=%7B%22description%22%3A+%22%22%2C+%22Submit%22%3A+%22%22%2C+%22Jenkins-Crumb%22%3A+%22{crumb}%22%7D"
         )
         cls._post_http(f"{get_url()}{uri}", body)
 
@@ -231,7 +247,7 @@ class JenkinsUtils:
         crumb = cls._get_crumb_as_string()
         body = (
             f"system_message=&{crumb}&"
-            f'json=%7B%22system_message%22%3A%22%22%2C%22Jenkins-Crumb%22%3A%22{crumb}%22%7D'
+            f"json=%7B%22system_message%22%3A%22%22%2C%22Jenkins-Crumb%22%3A%22{crumb}%22%7D"
         )
         cls._post_http(f"{get_url()}manage/configSubmit", body)
 
@@ -248,7 +264,9 @@ class JenkinsUtils:
         cls._reset_theme()
 
     @staticmethod
-    def login(driver: WebDriver, user_name: str | None = None, password: str | None = None) -> None:
+    def login(
+        driver: WebDriver, user_name: str | None = None, password: str | None = None
+    ) -> None:
         login_user = user_name or get_user_name()
         login_password = password or get_password()
 
@@ -265,7 +283,9 @@ def clear_data() -> None:
     JenkinsUtils.clear_data()
 
 
-def login(driver: WebDriver, user_name: str | None = None, password: str | None = None) -> None:
+def login(
+    driver: WebDriver, user_name: str | None = None, password: str | None = None
+) -> None:
     JenkinsUtils.login(driver, user_name=user_name, password=password)
 
 

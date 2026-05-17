@@ -1,9 +1,10 @@
 import pytest
 
-from pages.home_page import HomePage
+from pages.home_page.home_page import HomePage
 
 FREESTYLE_PROJECT_NAME = "freestyle_project"
 DESCRIPTION = "Description Freestyle Project"
+
 
 @pytest.mark.dependency()
 def test_create_freestyle_project(browser):

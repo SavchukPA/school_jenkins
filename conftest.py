@@ -7,7 +7,7 @@ from common.project_utils import get_browser, get_options, get_url
 
 
 @pytest.fixture(scope="function")
-def browser(request):
+def driver(request):
     get_browser()
 
     dependency_marker = request.node.get_closest_marker("dependency")
@@ -21,8 +21,6 @@ def browser(request):
         options.add_argument(option)
     print("opening browser")
     driver = webdriver.Chrome(options=options)
-    driver.implicitly_wait(5)
-
     print("getting page")
     driver.get(get_url())
     login(driver)
