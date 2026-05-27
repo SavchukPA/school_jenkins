@@ -33,6 +33,7 @@ def test_delete_item(driver, new_item):
     name = new_item["name"]
     item_page = pages.ItemPage(driver=driver, name=name)
     item_page.delete_item()
+    time.sleep(1)
     res_delete_item = item_page.home_page.check_invisible_item_in_table(name=name)
     time.sleep(1)
     assert res_delete_item is True
