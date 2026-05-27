@@ -3,11 +3,15 @@ import os
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import WebDriverWait as wait
 from selenium.webdriver.support import expected_conditions as EC
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 class BasePage:
     def __init__(self, driver):
         self.driver = driver
+        self.base_url = os.environ.get("HOST")
 
     def go_home_page(self):
         from pages.home_page.home_page import HomePage

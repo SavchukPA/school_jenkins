@@ -5,9 +5,12 @@ from pages.base_page import BasePage
 button_new_item_locator = (By.XPATH, '//a[contains(., "New Item")]')
 input_name_locator = (By.XPATH, "//input[@id='name']")
 list_folder_locator = (By.XPATH, "//li//span[text()='Folder']")
-list_folder_locator_by_type = lambda type: (By.XPATH, f"//li//span[text()='{type}']")
+list_item_locator_by_type = lambda item_type: (
+    By.XPATH,
+    f"//li//span[text()='{item_type}']",
+)
 button_submit_locator = (By.XPATH, "//button[@type='submit']")
-input_description = (By.XPATH, "//textarea[@name='_.description']")
+input_description = (By.XPATH, "//textarea[@class='jenkins-input   ']")
 button_save = (By.XPATH, "//button[@value='Save']")
 name_folder = (By.XPATH, "//h1[contains(text(), 'Test Folder')]")
 description_folder = (By.XPATH, "//div[contains(text(), 'Test Description')]")

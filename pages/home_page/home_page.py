@@ -31,6 +31,7 @@ class HomePage(BasePage):
         return [name_job.text for name_job in list_elements]
 
     def get_item_page_by_name(self, name: str):
+        self.go_home_page()
         self._element_is_visible(locators.name_item_in_table(name=name)).click()
 
     def check_invisible_item_in_table(self, name):

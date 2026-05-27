@@ -1,44 +1,38 @@
 import time
+
 import pytest
+import pages
+
 
 from conftest import driver
-from pages.new_item_page.new_item_page import NewItemPage
-from pages.item_page.item_page import ItemPage
+from data.test_cases.new_item import test_cases
 
 
-@pytest.mark.dependency(name="test_create_item")
-def test_create_item(driver):
-    ex_test_folder_name = "Test Folder"
-    ex_test_folder_description = "Test Folder Description"
-    new_item_p = NewItemPage(driver=driver)
+@pytest.mark.parametrize("test_case", test_cases)
+def test_create_item(driver, test_case):
+    new_item_p = pages.NewItemPage(driver=driver)
     new_item_p.create_item(
-        name=ex_test_folder_name,
-        description=ex_test_folder_description,
-        type_item="Folder",
+        data=test_case,
     )
-    item_page = ItemPage(driver=driver)
+    item_page = pages.ItemPage(driver=driver)
     ac_item_title = item_page.get_item_name()
-    ac_item_description = item_page.get_item_description()
-    assert ex_test_folder_description in ac_item_description
-    assert ex_test_folder_name in ac_item_title
+    ac_item_description = item_page.get_item_description(item_type=test_case["type"])
+    assert test_case["description"] in ac_item_description
+    assert test_case["name"] in ac_item_title
 
 
-@pytest.mark.dependency(name="test_rename_item", depends=["test_create_item"])
-def test_rename_item(driver):
-    current_name = "Test Folder"
+def test_rename_item(driver, new_item):
     new_name = "New Folder"
-    item_page = ItemPage(driver=driver, name=current_name)
-    item_page.update_item(new_name=new_name)
+    item_page = pages.ItemPage(driver=driver, name=new_item["name"])
+    item_page.update_item(new_name="New Folder")
     ac_item_title = item_page.get_item_name()
-
     assert new_name in ac_item_title
 
 
-@pytest.mark.dependency(name="delete_item", depends=["test_rename_item"])
-def test_delete_item(driver):
-    name = "New Folder"
-    item_page = ItemPage(driver=driver, name=name)
+def test_delete_item(driver, new_item):
+    name = new_item["name"]
+    item_page = pages.ItemPage(driver=driver, name=name)
     item_page.delete_item()
-    time.sleep(1)
     res_delete_item = item_page.home_page.check_invisible_item_in_table(name=name)
+    time.sleep(1)
     assert res_delete_item is True

@@ -1,8 +1,8 @@
-import time
-
+import pages
 from pages.base_page import BasePage
 from pages.home_page.home_page import HomePage
 from pages.item_page import locators
+from data.test_cases.new_item import ItemTypes
 
 
 class ItemPage(BasePage):
@@ -13,8 +13,34 @@ class ItemPage(BasePage):
         if name:
             self.home_page.get_item_page_by_name(name=name)
 
-    def get_item_description(self) -> str:
+    def get_item_description_1(
+        self,
+    ) -> str:
         return self._element_is_visible(locator=locators.description).text
+
+    def get_item_description_2(
+        self,
+    ) -> str:
+        return self._element_is_visible(locator=locators.description_content).text
+
+    def get_item_description(self, item_type: ItemTypes):
+        match item_type:
+            case (
+                ItemTypes.PIPELINE
+                | ItemTypes.FREESTYLE_PROJECT
+                | ItemTypes.MULTI_CONFIGURATION_PROJECT
+            ):
+                return self.get_item_description_2()
+
+            case (
+                ItemTypes.FOLDER
+                | ItemTypes.MULTIBRANCH_PIPELINE
+                | ItemTypes.ORGANIZATION_FOLDER
+            ):
+                return self.get_item_description_1()
+
+            case _:
+                raise ValueError(f"Неправильный тип item: {item_type}")
 
     def get_item_name(self):
         return self._element_is_visible(locator=locators.title).text

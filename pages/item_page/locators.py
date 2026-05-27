@@ -5,6 +5,7 @@ title_item_in_table = lambda title: (
     f"//td//span[contains(text(), '{title}')]",
 )
 description = (By.XPATH, "//div[@id='view-message']")
+description_content = (By.XPATH, "//div[@id='description-content']")
 title = (By.XPATH, "//h1")
 left_menu_button_rename = (By.XPATH, "//a[contains(@href, 'confirm-rename')]")
 input_new_name = (By.XPATH, "//input[@name='newName']")

@@ -1,27 +1,11 @@
 import time
 
 from selenium.webdriver.common.by import By
+
+from data.test_cases.new_item import ItemTypes
 from pages.base_page import BasePage
 from pages.home_page.home_page import HomePage
 from pages.new_item_page import locators
-
-# @pytest.mark.dependency(name="test_create_folder")
-# def test_create_folder(browser):
-#     ex_name_folder = "Test Folder"
-#     element_is_clickable(browser, button_new_item_locator).click()
-#     element_is_visible(driver=browser, locator=input_name_locator).send_keys(
-#         ex_name_folder
-#     )
-#     element_is_visible(browser, list_folder_locator).click()
-#     element_is_clickable(browser, button_submit_locator).click()
-#     element_is_visible(browser, input_description).send_keys("Test Description")
-#     element_is_clickable(browser, button_save).click()
-#     browser.get("http://localhost:8080/")
-#     time.sleep(2)
-#     ac_name_folder = element_is_visible(driver=browser, locator=table_name_folder).text
-#     assert (
-#         ac_name_folder == ex_name_folder
-#     ), f"Expected: {ex_name_folder}, Actual: {ac_name_folder}"
 
 
 class NewItemPage(BasePage):
@@ -39,9 +23,9 @@ class NewItemPage(BasePage):
     def set_folder_in_list_items(self):
         self._element_is_visible(locators.list_folder_locator).click()
 
-    def set_folder_in_list_items_by_type(self, type_item: str):
+    def set_item_in_list_items_by_type(self, item_type: ItemTypes):
         self._element_is_visible(
-            locators.list_folder_locator_by_type(type=type_item)
+            locators.list_item_locator_by_type(item_type=item_type.value)
         ).click()
 
     def click_submit_button(self):
@@ -57,10 +41,33 @@ class NewItemPage(BasePage):
     def get_item_name(self):
         self._element_is_visible(locators.title_item)
 
-    def create_item(self, name: str, description: str, type_item: str):
+    def create_item(
+        self,
+        name: str | None = None,
+        description: str | None = None,
+        item_type: ItemTypes | None = None,
+        data: dict | None = None,
+    ) -> None:
+        """
+        Создание нового item
+        Передать параметры: name, item_type
+        Необязательный параметр: description
+        Или передать словарь тест-кейс
+
+        :param name: Имя
+        :param description: Описание
+        :param item_type: Enum item ItemTypes
+        :param data: test case
+        :return: None
+        """
+
+        if data:
+            name = data["name"]
+            description = data["description"]
+            item_type = data["type"]
         self.click_new_item()
         self.input_name_new_item(name=name)
-        self.set_folder_in_list_items_by_type(type_item=type_item)
+        self.set_item_in_list_items_by_type(item_type=item_type)
         self.click_submit_button()
         self.input_description(description=description)
         self.click_button_save()
